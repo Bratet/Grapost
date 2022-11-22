@@ -1,12 +1,17 @@
-version: '3.7'
+version: '3;8'
+
 services:
-    web:
-        build: .
-        ports:
-            - "5000:5000"
-        volumes:
-            - .:/code
-        depends_on:
-            - redis
-    redis:
-        image: redis
+
+  engine:
+    restart: on-failure
+
+    build:
+      context: . 
+      dockerfile: Dockerfile
+    
+    volumes:
+      - .:/app
+    ports:
+      - '8000:8000'
+
+    command: uvicorn backend.main:app --reload --host 0.0.0.0
